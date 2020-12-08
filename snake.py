@@ -11,7 +11,9 @@ Point = namedtuple("point", ["x", "y"])
 BACKGROUND_COLOR = 0
 BODY_COLOR = 7
 HEAD_COLOR = 3
-APPLE_COLOR = 8
+FOOD_COLOR = 8
+SB_TEXT = 1
+SB_BACKGROUND = 8
 
 #### Game Over Colors ####
 GAMEOVER_TEXT = ["GAME OVER", "PLAY AGAIN?", "PRESS Y OR N"]
@@ -21,6 +23,8 @@ GAMEOVER_COLOR = 7
 #### Dimensions of Game Window ####
 WIDTH = 40
 HEIGHT = 50
+
+SB_HEIGHT = pyxel.FONT_HEIGHT
 
 #### Define Nav Directions ####
 UP = Point(0, -1)
@@ -71,7 +75,14 @@ class Snake:
                 self.direction = RIGHT
 
     def spawn_food(self):
-        pass
+        snake_pixels = set(self.snake)
+        self.food = self.snake[0]
+        while self.food in snake_pixels:
+            x = randint(0, WIDTH - 1)            ### The '-1' is needed because the max width value would appear off screen
+            y = randint(0, HEIGHT - 1)
+
+    def eat(self):
+
 
     def grow_snake(self):
         head = self.snake[0]
