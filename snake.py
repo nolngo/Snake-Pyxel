@@ -35,27 +35,28 @@ class Snake:
     def __init__(self):
         pyxel.init(WIDTH, HEIGHT, caption = "Not Sliter.io", fps = 0)
     
-    def start(self):
+    def initial(self):
         self.direction = RIGHT
+        self.score = 0
 
 
 
 
 
-class update(self):
+def update(self):
     pass
 
-class controls(self):
-if pyxel.btn(pyxel.KEY_UP)
-    if self.direction is not DOWN:      ### In Snake, you cannot flip 180 degrees onto your own body, which is why we need the "is not" statement
-        self.direction = UP
-if pyxel.btn(pyxel.KEY_DOWN)
-    if self.direction is not UP:
-        self.direction = DOWN
-if pyxel.btn(pyxel.KEY_LEFT)
-    if self.direction is not RIGHT:
-        self.direction = LEFT
-if pyxel.btn(pyxel.KEY_RIGHT)
-    if self.direction is not LEFT:
-        self.direction = RIGHT
+def controls(self):
+    if pyxel.btn(pyxel.KEY_UP):
+        if self.direction is not DOWN:      ### In Snake, you cannot flip 180 degrees onto your own body, which is why we need the "is not" statement
+            self.direction = UP
+    elif pyxel.btn(pyxel.KEY_DOWN):
+        if self.direction is not UP:
+            self.direction = DOWN
+    elif pyxel.btn(pyxel.KEY_LEFT):
+        if self.direction is not RIGHT:
+            self.direction = LEFT
+    elif pyxel.btn(pyxel.KEY_RIGHT):
+        if self.direction is not LEFT:
+            self.direction = RIGHT
 
