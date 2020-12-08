@@ -33,30 +33,48 @@ INITIAL = Point(5, 5)       ###The starting point of the game
 
 class Snake: 
     def __init__(self):
-        pyxel.init(WIDTH, HEIGHT, caption = "Not Sliter.io", fps = 0)
+        pyxel.init(WIDTH, HEIGHT, caption = "Pre-Sliter.io", fps = 0)
+        self.start
+        pyxel.run(self.update, self.draw)
     
-    def initial(self):
+    def start(self):
+        self.snake = deque()
         self.direction = RIGHT
         self.score = 0
+        self.death = False
+        self.spawn_food()
+         
 
 
 
 
 
-def update(self):
-    pass
+    def update(self):
+        pass
 
-def controls(self):
-    if pyxel.btn(pyxel.KEY_UP):
-        if self.direction is not DOWN:      ### In Snake, you cannot flip 180 degrees onto your own body, which is why we need the "is not" statement
-            self.direction = UP
-    elif pyxel.btn(pyxel.KEY_DOWN):
-        if self.direction is not UP:
-            self.direction = DOWN
-    elif pyxel.btn(pyxel.KEY_LEFT):
-        if self.direction is not RIGHT:
-            self.direction = LEFT
-    elif pyxel.btn(pyxel.KEY_RIGHT):
-        if self.direction is not LEFT:
-            self.direction = RIGHT
 
+
+
+
+    def controls(self):
+        if pyxel.btn(pyxel.KEY_UP):
+            if self.direction is not DOWN:      ### In Snake, you cannot flip 180 degrees onto your own body, which is why we need the "is not" statement
+                self.direction = UP
+        elif pyxel.btn(pyxel.KEY_DOWN):
+            if self.direction is not UP:
+                self.direction = DOWN
+        elif pyxel.btn(pyxel.KEY_LEFT):
+            if self.direction is not RIGHT:
+                self.direction = LEFT
+        elif pyxel.btn(pyxel.KEY_RIGHT):
+            if self.direction is not LEFT:
+                self.direction = RIGHT
+
+    def spawn_food(self):
+        pass
+
+    def grow_snake(self):
+        head = self.snake[0]
+        new_head = Point(head.x + self.direction.x, head.y + self.direction.y)
+        self.snake.appendleft(new_head)
+        self.popped_point = self.snake.pop()
