@@ -19,6 +19,7 @@ SB_BACKGROUND = 8
 GAMEOVER_TEXT = ["GAME OVER", "PLAY AGAIN?", "Q TO QUIT | R TO RETRY"]
 GAMEOVER_TEXT_COLOR = 0
 GAMEOVER_COLOR = 7
+GAMEOVER_HEIGHT = 5
 
 #### Dimensions of Game Window ####
 WIDTH = 40
@@ -37,22 +38,31 @@ INITIAL = Point(5, 5)       ###The starting point of the game
 
 class Snake: 
     def __init__(self):
-        pyxel.init(WIDTH, HEIGHT, caption = "Pre-Sliter.io", fps = 0)
-        self.start
-        pyxel.run(self.update, self.draw)
+        pyxel.init(WIDTH, HEIGHT, caption = "Pre-Sliter.io", fps = 15)              #### FPS determines the pace of the game, how often the program UPDATES!!!
+        self.reset
+        pyxel.run(self.update, self.render)
     
-    def start(self):
-        self.snake = deque()
+    def reset(self):                                   ### This will reinitiate the game back to starting position
         self.direction = RIGHT
+        self.snake = deque()
+        self.snake.append(INITIAL)
+        self.death = False
         self.score = 0
-        self.dead = False
         self.spawn_food()
-        self.snake.append(START)
 
 
     def update(self):
-        pass
+        if not self.death:
+            self.controls()
+            self.grow_snake()
+            self.eat()
+            self.is_dead()
 
+        if pyxel.btn(pyxel.KEY_Q):
+            pyxel.quit()
+        
+        if pyxel.btnp(pyxel.KEY_R):
+            self.reset()
 
 
 
@@ -76,6 +86,7 @@ class Snake:
         while self.food in snake_pixels:
             x = randint(0, WIDTH - 1)               ### The '-1' is needed because the max width value would appear off screen
             y = randint(SB_HEIGHT + 1, HEIGHT - 1)
+            self.food = Point(x, y)
 
     def eat(self):
         if self.snake[0] == self.food:              ### This line checks if the position of the head of the snake equals the food.
@@ -97,10 +108,46 @@ class Snake:
             self.game_over()
     
     def game_over(self):
-        self.dead = True
+        self.death = True
 
         pyxel.stop()
 
 ########## Rendering ###########
 
+    def render(self):
+        if not self.death:
+            pyxel.cls(col=BACKGROUND_COLOR)
+            self.render_snake()
+            self.render_score()
+            pyxel.pset(self.food.x, self.food.y, col=FOOD_COLOR)
+        else:
+            self.render_game_over()
 
+    def render_snake(self):
+        for i, point in enumerate(self.snake):
+            if i == 0:
+                color = HEAD_COLOR
+            else:
+                color = BODY_COLOR
+            pyxel.pset(point.x, point.y, col=color)
+
+    def render_score(self):
+        score = "{:03}".format(self.score)                              ### Makes the Score a 3 digit number with 000 as the starting score.
+        pyxel.rect(0, 0, WIDTH, SB_HEIGHT, SB_BACKGROUND)               ### 0 margin 0 padding
+        pyxel.text(1, 1, score, SB_TEXT)                                ### 1 margin 1 padding bc text is within the scoreboard.
+        
+
+    def render_game_over(self):
+        pyxel.cls(col=GAMEOVER_COLOR)
+        display_text = GAMEOVER_TEXT[:]
+        for i, text in enumerate(display_text):
+            y_offset = (pyxel.FONT_HEIGHT + 2) * i
+            text_x = self.center_text(text, WIDTH)
+            pyxel.text(text_x, GAMEOVER_HEIGHT + y_offset, text, GAMEOVER_TEXT_COLOR)
+
+    @staticmethod
+    def center_text(text, page_width, char_width=pyxel.FONT_WIDTH):
+        text_width = len(text) * char_width
+        return (page_width - text_width) // 2
+
+Snake()
