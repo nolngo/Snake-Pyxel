@@ -3,7 +3,7 @@ from random import randint
 
 import pyxel
 
-Point = namedtuple("point", ["x", "y"])
+Point = namedtuple("Point", ["x", "y"])
 
 ########## Global Constants ##########
 
@@ -16,7 +16,7 @@ SB_TEXT = 1
 SB_BACKGROUND = 8
 
 #### Game Over Colors ####
-GAMEOVER_TEXT = ["GAME OVER", "PLAY AGAIN?", "Q TO QUIT | R TO RETRY"]
+GAMEOVER_TEXT = ["GAME OVER", "AGAIN?", "Q: QUIT", "R: RETRY"]
 GAMEOVER_TEXT_COLOR = 0
 GAMEOVER_COLOR = 7
 GAMEOVER_HEIGHT = 5
@@ -32,14 +32,14 @@ UP = Point(0, -1)
 DOWN = Point(0, 1)
 LEFT = Point(-1, 0)
 RIGHT = Point(1, 0)
-INITIAL = Point(5, 5)       ###The starting point of the game
+INITIAL = Point(5, 5 + SB_HEIGHT)       ###The starting point of the game
 
 ########## Classes ##########
 
 class Snake: 
     def __init__(self):
         pyxel.init(WIDTH, HEIGHT, caption = "Pre-Sliter.io", fps = 15)              #### FPS determines the pace of the game, how often the program UPDATES!!!
-        self.reset
+        self.reset()
         pyxel.run(self.update, self.render)
     
     def reset(self):                                   ### This will reinitiate the game back to starting position
